@@ -5,10 +5,10 @@ InsideOutTest <- function(polygons, distances) {
   OUT <- NULL
   for (p in 1:length(polygons[, 1])){
     polygon <- polygons[p, ]
-    test1 <- distances[, 2] < polygon[1]  # test x's against left and right
-    test2 <- distances[, 2] > polygon[3]
-    test3 <- distances[, 3] < polygon[2]  # test y's against top and bottom
-    test4 <- distances[, 3] > polygon[8]
+    test1 <- distances[, 3] < polygon[1]  # test x's against left and right
+    test2 <- distances[, 3] > polygon[3]
+    test3 <- distances[, 4] < polygon[2]  # test y's against top and bottom
+    test4 <- distances[, 4] > polygon[8]
     all <- cbind(test1, test2, test3, test4)  # A False across all columns is inside the rectangle
     all[all == "FALSE"] <- 0
     test5 <- rowSums(all)

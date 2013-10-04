@@ -5,10 +5,10 @@ PlotPatch <- function(distances, area, node.area) {
   # node.area is the area for each of the nodes (i.e., reserves)
   
   # seperate pops
-  pop1 <- distances[distances[, 1] == 1, ]
-  pop2 <- distances[distances[, 1] == 2, ]
-  pop3 <- distances[distances[, 1] == 3, ]
-  pop4 <- distances[distances[, 1] == 4, ]  
+  pop1 <- distances[distances[, 2] == 1, 1:4]
+  pop2 <- distances[distances[, 2] == 2, 1:4]
+  pop3 <- distances[distances[, 2] == 3, 1:4]
+  pop4 <- distances[distances[, 2] == 4, 1:4]  
   
   # add nonsense points if population has gone extinct
   if(length(pop1) < 4) { pop1 <- matrix(-4, 4, 4)}
@@ -23,10 +23,10 @@ PlotPatch <- function(distances, area, node.area) {
   if(length(pop4) == 4) { pop4 <- as.matrix(t(pop4))}
   
   # plot organisms
-  plot(pop1[, 2],pop1[, 3], xlab = "Distance (km)", ylab = "Distance (km)", xlim = c(min(distances[, 2]-1), max(distances[, 2])+1), ylim = c(min(distances[, 3]-1), max(distances[, 3])+1))
-  points(pop2[, 2],pop2[, 3], col = "blue")
-  points(pop3[, 2],pop3[, 3],, col = "green")
-  points(pop4[, 2],pop4[, 3], col = "red")
+  plot(pop1[, 3], pop1[, 4], xlab = "Distance (km)", ylab = "Distance (km)", xlim = c(min(distances[, 3])-1, max(distances[, 3]+1)), ylim = c(min(distances[, 4]-1), max(distances[, 4]+1)))
+  points(pop2[, 3],pop2[, 4], col = "blue")
+  points(pop3[, 3],pop3[, 4],, col = "green")
+  points(pop4[, 3],pop4[, 4], col = "red")
   
   # plot node boundaries (reserves)
   x <- sqrt(area)

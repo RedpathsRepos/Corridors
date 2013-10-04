@@ -25,11 +25,12 @@ InitialAlleleFrequencies <- function(n.individs, n.loci, n.alleles) {
   gfreqs2=rep(gfreqs[,2],(n*(as.numeric(gfreqs[,3]))))
   gtypes=cbind(gfreqs1,gfreqs2)
   gtypes=gtypes[sample(1:length(gtypes[,1]),replace=F),]                          # shuffle?
+  gtypes <- cbind(as.numeric(gtypes[, 1]), as.numeric(gtypes[, 2]))
   OUT=NULL  
   for (l in 1:n.loci){ 
     sg1=gtypes[sample(1:length(gtypes[,1]),n.individs),]
     OUT <- cbind(OUT, sg1)
   }
-  OUT <- cbind(1:length(OUT[, 1]), OUT)
+  #OUT <- cbind(1:length(OUT[, 1]), OUT)
   return(OUT)
 }
