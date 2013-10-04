@@ -11,13 +11,19 @@ PlotPatch <- function(distances, area, node.area) {
   pop4 <- distances[distances[, 1] == 4, ]  
   
   # add nonsense points if population has gone extinct
-  if(length(pop1) < 5) { pop1 <- matrix(-4, 4, 4)}
-  if(length(pop2) < 5) { pop2 <- matrix(-4, 4, 4)}
-  if(length(pop3) < 5) { pop3 <- matrix(-4, 4, 4)}
-  if(length(pop4) < 5) { pop4 <- matrix(-4, 4, 4)}
+  if(length(pop1) < 4) { pop1 <- matrix(-4, 4, 4)}
+  if(length(pop2) < 4) { pop2 <- matrix(-4, 4, 4)}
+  if(length(pop3) < 4) { pop3 <- matrix(-4, 4, 4)}
+  if(length(pop4) < 4) { pop4 <- matrix(-4, 4, 4)}
+
+  # reformat if only a single individual
+  if(length(pop1) == 4) { pop1 <- as.matrix(t(pop1))}
+  if(length(pop2) == 4) { pop2 <- as.matrix(t(pop2))}
+  if(length(pop3) == 4) { pop3 <- as.matrix(t(pop3))}
+  if(length(pop4) == 4) { pop4 <- as.matrix(t(pop4))}
   
   # plot organisms
-  plot(pop1[, 2],pop1[, 3], xlab = "Distance (km)", ylab = "Distance (km)", xlim = c(min(distances[, 2]), max(distances[, 2])), ylim = c(min(distances[, 3]), max(distances[, 3])))
+  plot(pop1[, 2],pop1[, 3], xlab = "Distance (km)", ylab = "Distance (km)", xlim = c(min(distances[, 2]-1), max(distances[, 2])+1), ylim = c(min(distances[, 3]-1), max(distances[, 3])+1))
   points(pop2[, 2],pop2[, 3], col = "blue")
   points(pop3[, 2],pop3[, 3],, col = "green")
   points(pop4[, 2],pop4[, 3], col = "red")
@@ -82,7 +88,7 @@ PlotPatch <- function(distances, area, node.area) {
   square8 <- c(xleft1, ybottom1, xright1, ybottom1, xright1, ytop1, xleft1, ytop1)
   
   coords <- rbind(square1, square2, square3, square4, square5, square6, square7, square8)
-  print(coords)
+  return(coords)
 }
 
 

@@ -5,7 +5,7 @@
 # Usage notes:  s
 #======================================================================================================================#
 # Set working directory, import packages, source functions, initialize global variables
-setwd("C:/Dropbox/InPrep/corridors/rscript")
+setwd("C:/Dropbox/InPrep/corridors/rscript.corridors")
 
 library(mnormt)
 library(hierfstat)
@@ -21,9 +21,9 @@ area <- 100             # the total area of the matrix (theoretocally is unitles
 node.area <- 10         # the area for each patch
 std.dev <- 3           # the standard deviation to use for generating dispersal kernels
 n.propagules <- 100     # how many propagues to disperse per sites
-c.capacity <- 400      # the total carrying capacity (currently regulated across entire metapopulation)
+c.capacity <- 100      # the total carrying capacity (currently regulated across entire metapopulation)
 n.alleles <- 2
-n.loci <- 10
+n.loci <- 100
 
 #======================================================================================================================#
 #dat <- read.table(paste(getwd(), "/data/.txt", sep = ''), header=TRUE, sep="\t", na.strings="?", dec=".", strip.white=TRUE)
@@ -52,67 +52,6 @@ plot3 <- PlotPatch(distances = capacity, area, node.area)
 # dispersal
 # measure relevant parameters
 # repeat
-
-
-
-
-
-
-migration.matrix <- MigrationMatrices(distances, deme.length, range, n.sites, n.isolates)      # distances must come from PropaguleDistances
-m.matrix <- t(migration.matrix)
-
-
-
-#isolate desired number of pops (check when more than 1)
-pops <- 1
-reduction <- 0.1  #really 1 - reduction, so smaller values equal bigger reduction
-m.matrix[-pops, pops] <- floor(m.matrix[-pops, pops] * reduction)
-m.matrix[pops, -pops] <- floor(m.matrix[pops, -pops] * reduction)
-
-#change to propotions
-n.matrix <- matrix(ncol=n.sites, nrow=n.sites)
-for (i in 1:n.sites) {
-  rowi <- m.matrix[i, ]
-  totals <- sum(rowi)
-  props <- rowi/totals
-  n.matrix[i, ] <- props
-}
-rowSums(n.matrix)   #should all be 1, serves as check
-
-#n.matrix <- cbind.data.frame("{", n.matrix, "}")
-n.matrix <- cbind("{", n.matrix, "}")
-n.matrix[1, 1] <- "{{"
-n.matrix[length(n.matrix)] <- "}}"
-matrix1 <- n.matrix
-
-#################matrix 2
-pops <- 1
-reduction <- 0  #really 1 - reduction, so smaller values equal bigger reduction
-m.matrix[-pops, pops] <- floor(m.matrix[-pops, pops] * reduction)
-m.matrix[pops, -pops] <- floor(m.matrix[pops, -pops] * reduction)
-
-#change to propotions
-n.matrix <- matrix(ncol=n.sites, nrow=n.sites)
-for (i in 1:n.sites) {
-  rowi <- m.matrix[i, ]
-  totals <- sum(rowi)
-  props <- rowi/totals
-  n.matrix[i, ] <- props
-}
-rowSums(n.matrix)   #should all be 1, serves as check
-
-#n.matrix <- cbind.data.frame("{", n.matrix, "}")
-n.matrix <- cbind("{", n.matrix, "}")
-n.matrix[1, 1] <- "{{"
-n.matrix[length(n.matrix)] <- "}}"
-matrix2 <- n.matrix
-
-
-##################formatting
-n.matrix <- rbind(matrix1, matrix2)
-
-
-write.table(n.matrix, "/home/miles/Programs/quantinemo/dispersalfile.txt", col.names = FALSE, row.names = FALSE, sep=" ", append = FALSE, quote = FALSE)   # note use of quote = False to strip quotes ! :) 
 
 
 
