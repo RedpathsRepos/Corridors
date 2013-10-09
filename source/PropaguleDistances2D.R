@@ -37,10 +37,10 @@ PropaguleDistances2D <- function(n.propagules, std.dev, initialize, distances) {
       tmp <- OUT[,c(i, i+1)]
       m1 <- distances[floor(i/2)+1, ]
       m2 <- cbind(m1[1], m1[2], tmp)
-      gtypes1 <- m1[-(1:4)]
-      gtypes2 <- t(matrix(gtypes1, length(gtypes1), length(m2[, 1])))
-      m3 <- cbind(m2, gtypes2 )
-      OUT2 <- rbind(OUT2, m3)
+      #gtypes1 <- m1[-(1:4)]                              # reactivate if want to track ALL genotypes of EVERY offspring
+      #gtypes2 <- t(matrix(gtypes1, length(gtypes1), length(m2[, 1])))
+      #m3 <- cbind(m2, gtypes2)
+      OUT2 <- rbind(OUT2, m2)
       } 
     return(OUT2)
   }

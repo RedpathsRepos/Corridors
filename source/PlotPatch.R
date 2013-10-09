@@ -1,8 +1,9 @@
-PlotPatch <- function(distances, area, node.area) {
+PlotPatch <- function(distances, area, node.area, width) {
   ## plots the 2d distribution of individuals, the nodes, and the corridors
   # distances is the output from PropaguleDistances2D
   # area is the area for the entire metapopulation
   # node.area is the area for each of the nodes (i.e., reserves)
+  # width is the width of the corridors
   
   # seperate pops
   pop1 <- distances[distances[, 2] == 1, 1:4]
@@ -55,7 +56,7 @@ PlotPatch <- function(distances, area, node.area) {
   
   # plot corridors
   # bottom corridor
-  width <- 0.5
+  #width <- 0.5
   xleft1 <- point2[1, 1]
   xright1 <- point2[4, 2]
   ytop1 <- ys[1]+width
