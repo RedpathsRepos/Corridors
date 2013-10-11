@@ -3,10 +3,10 @@ CarryingCapacity <- function(distances, g.types, c.capacity) {
   ## distances: output from function PropaguleDistances2D or Raycasting (in distances format) 
   ## gtypes: a distances object complete with last generations genotypes
   ## c.capacity: the entire carrying capacity of the metapopulation
-  if(length(distances[, 1]) >= c.capacity){    # if statement prevents crash if fewer individuals than c.cacity (e.g., high dispersal)
-    keepers <- sample(1:length(distances[, 1]), c.capacity, replace = FALSE)
-    individuals <- distances[keepers, ]
-  } else {individuals = distances}    
+  hist(rnbinom(c.capacity, mu = 2, size = .5), breaks = 40)
+  dist <- rnbinom(1000, mu = 5, size = .5)
+  keepers <- sample(1:length(distances[, 1]), c.capacity, replace = FALSE)
+  individuals <- distances[keepers, ]
   m1 <- match(individuals[, 1], g.types[, 1])  # could get previous generation dispersal distances here
   inds <- cbind(individuals, g.types[m1, -(1:4)])
   OUT <- inds[order(inds[, 1]), ]
