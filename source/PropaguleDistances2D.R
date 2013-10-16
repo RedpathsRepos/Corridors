@@ -26,16 +26,18 @@ PropaguleDistances2D <- function(n.propagules, std.dev, initialize, distances, r
   }  
     
   if (initialize == FALSE) {
-    if(length(distances[, 1] < c.capacity)) {                  # This if deals with situations when fall below carrying capacity
-      needed.individs <- c.capacity - length(distances[, 1])   # How many new individuals are need to get pop back up to carrying capacity
-      s1 <- sample(1:length(distances[, 1]), needed.individs, replace = TRUE) #sampling with replacement
-      distances <- rbind(distances, distances[s1, ])
-      distances <- distances[order(distances[, 1]), ]
-    }
+  # if(length(distances[, 1] < c.capacity)) {                  # This if deals with situations when fall below carrying capacity
+  #    needed.individs <- c.capacity - length(distances[, 1])   # How many new individuals are need to get pop back up to carrying capacity
+  #    s1 <- sample(1:length(distances[, 1]), needed.individs, replace = TRUE) #sampling with replacement
+  #   distances <- rbind(distances, distances[s1, ])
+  #    distances <- distances[order(distances[, 1]), ]
+  # }
     
     OUT1.1 <- mapply(rgamma, rs.shape, shape, scale)
     OUT1.2 <- mapply(rgamma, rs.shape, shape, scale)
     ncols <- length(OUT1.1)
+    ncols2 <- length(distances[, 1])
+    ncols = min(ncols, ncols2)
     OUT2 <- NULL
     for (i in 1:ncols){                                        # reformatting of output for downstream analyses
       tmp <- cbind(OUT1.1[[i]], OUT1.2[[i]])                   # deals with strange formatting of list
