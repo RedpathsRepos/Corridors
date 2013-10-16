@@ -16,20 +16,26 @@ SummaryStats <- function(polygons, distances) {
     all[all == "FALSE"] <- 0
     test5 <- rowSums(all)
     retain <- which(test5 == 0)
+    if (length(retain) < 15) {next}             # if less than 15 individuals in a patch, move to next patch
     points.in <- distances[retain, ]
     points.in <- cbind(p, points.in)
     OUT <- rbind(OUT, points.in)
   }
   # first coloumn of OUT is the patch they are now residing in. 1=bottomleft, 2=bottomright, 3=topright, 4=topleft
   gdata <- as.data.frame(OUT[, -(2:5)])
-  nams = 1:length(gdata[, 1])
-  rownames(gdata) <- make.names(nams, unique = TRUE)   # not sure why this formatting was needed, kind of annoying really
-  #allele.count(gdata, diploid = TRUE)
-  #allelic.richness(gdata, min.n=NULL, diploid = TRUE)
-  stats <- basic.stats(gdata, diploid=TRUE)
-  #asp = indpca(gdata)
-  #plot.indpca(asp)
-  OUT <- stats
-  return(OUT)
-}
+  if (length(unique(gdata[, 1]))==1) {return("OnePopOnly")} else {
+    nams = 1:length(gdata[, 1])
+    rownames(gdata) <- make.names(nams, unique = TRUE)   # not sure why this formatting was needed, kind of annoying really
+    #allele.count(gdata, diploid = TRUE)
+    #allelic.richness(gdata, min.n=NULL, diploid = TRUE)
+    stats <- basic.stats(gdata, diploid=TRUE)
+    stats <- stats$overall
+    N <- length(distances[, 1])
+    stats <- c(stats, N)
+    #asp = indpca(gdata)
+    #plot.indpca(asp)
+    OUT <- stats
+    return(OUT)
+  }
+}  
   

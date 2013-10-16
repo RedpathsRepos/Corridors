@@ -11,7 +11,7 @@ FunctionSourcer <- function() {
   source(paste(getwd(), "/source/InitialAlleleFrequencies.R", sep = ''))
   source(paste(getwd(), "/source/SummaryStats.R", sep = ''))
   source(paste(getwd(), "/source/MutationModel.R", sep = ''))
-  source(paste(getwd(), "/source/InitializeModel.R", sep = ''))
+  #source(paste(getwd(), "/source/InitializeModel.R", sep = ''))
   source(paste(getwd(), "/source/RunModel.R", sep = ''))
   setwd("C:/Dropbox/InPrep/corridors/working")                        # set actual working directory 
 }
