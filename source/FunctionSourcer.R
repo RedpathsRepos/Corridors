@@ -1,5 +1,6 @@
-FunctionSourcer <- function() {
+#FunctionSourcer <- function() {
   # Set working directory, import packages, source functions, 
+  setwd(paste(base.directory,"/rscript.corridors/", sep = ''))    # set temp working directory 
   library(hierfstat)
   library(mnormt)   # used for multivariate normal distribution in initalizing model  
   source(paste(getwd(), "/source/ReproductiveSuccess.R", sep = ''))
@@ -11,7 +12,10 @@ FunctionSourcer <- function() {
   source(paste(getwd(), "/source/InitialAlleleFrequencies.R", sep = ''))
   source(paste(getwd(), "/source/SummaryStats.R", sep = ''))
   source(paste(getwd(), "/source/MutationModel.R", sep = ''))
-  #source(paste(getwd(), "/source/InitializeModel.R", sep = ''))
   source(paste(getwd(), "/source/RunModel.R", sep = ''))
-  setwd("C:/Dropbox/InPrep/corridors/working")                        # set actual working directory 
-}
+  source(paste(getwd(), "/source/PlotPatchNoPlot.R", sep = ''))
+  setwd(paste(base.directory,"/working/", sep = ''))  # set actual working directory
+  #}
+
+# deprecated
+# source(paste(getwd(), "/source/InitializeModel.R", sep = ''))

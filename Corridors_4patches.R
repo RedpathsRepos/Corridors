@@ -21,20 +21,24 @@ source(paste(getwd(), "/source/InitialAlleleFrequencies.R", sep = ''))
 source(paste(getwd(), "/source/SummaryStats.R", sep = ''))
 source(paste(getwd(), "/source/MutationModel.R", sep = ''))
 
-mu <- 2
-size <- 0.3
-shape <- 2
-scale <- 1
+mu <- 1
+size <- 0.1
+
+# initialize dispersal kernnel
+shape <- 1
+scale <- .2
+kernnel <- DispersalKernnel(shape, scale)  # if dispersal distances are too large, will drop below carrying capacity
+
 
 area <- 1000             # the total area of the matrix (theoretocally is unitless)
-node.area <- 100         # the area for each patch
-width <- .5              # the width of the corridor
-std.dev <- 5          # the standard deviation to use for generating dispersal kernels
-n.propagules <- 20    # how many propagues to disperse per sites
+node.area <- 100        # the area for each patch
+width <- 3              # the width of the corridor
+std.dev <- 3            # the standard deviation to use for generating dispersal kernels ; default is 3
+n.propagules <- 20      # how many propagues to disperse per sites
 c.capacity <- 3000      # the total carrying capacity (currently regulated across entire metapopulation)
 n.alleles <- 2
 n.loci <- 100
-mutation.rate <- 0.00001
+mutation.rate <- 0.00000001
 
 #======================================================================================================================#
 #dat <- read.table(paste(getwd(), "/data/.txt", sep = ''), header=TRUE, sep="\t", na.strings="?", dec=".", strip.white=TRUE)
@@ -43,10 +47,8 @@ mutation.rate <- 0.00001
 # initialize reprductive succes
 rs.shape <- ReproductiveSuccess(c.capacity, mu, size)
 sum(rs.shape); mean(rs.shape)
+hist(rs.shape, breaks = 50)
 if(sum(rs.shape)<c.capacity) {print("WARNING: CHANGE REPRODUCTIVE SUCCESS!!!")}  # should be greater than carrying capacity
-
-# initialize dispersal kernnel
-kernnel <- DispersalKernnel(shape, scale)  # if dispersal distances are too large, will drop below carrying capacity
 
 distances <- PropaguleDistances2D(n.propagules = 10000, std.dev, initialize = TRUE, distances = NULL)
 plot1 <- PlotPatch(distances, area, node.area, width)
@@ -62,22 +64,7 @@ distances.new <- cbind(capacity, genotypes)                   # individual ids a
 capacity <- cbind(1:length(capacity[, 1]), distances.new[order(distances.new[, 2]), -1])  # this fixes the above
 
 OUT = NULL
-for (i in 1:50){
-distances.new <- PropaguleDistances2D(n.propagules, std.dev, initialize = FALSE, distances = capacity, rs.shape, shape, scale)
-#plotx <- PlotPatch(distances = distances.new, area, node.area, width)
-attrition <- InsideOutTest(polygons = plot1, distances = distances.new)
-capacity <- CarryingCapacity(distances = attrition, g.types = capacity, c.capacity) 
-capacity <- MutationModule(distances = capacity, mutation.rate)
-plot3 <- PlotPatch(distances = capacity, area, node.area, width)
-if(length(capacity[, 1]) < 50) {break}
-sum <- SummaryStats(polygons = plot1, distances = capacity)
-if(sum[1]=="OnePopOnly") {next}
-output <- t(data.frame(c(i, sum)))
-OUT <- rbind(OUT, output)
-}
-
-OUT <- NULL
-for (i in 1:n.generations){
+for (i in 1:150){
   distances.new <- PropaguleDistances2D(n.propagules, std.dev, initialize = FALSE, distances = capacity, rs.shape, shape, scale)
   #plotx <- PlotPatch(distances = distances.new, area, node.area, width)
   attrition <- InsideOutTest(polygons = plot1, distances = distances.new)
@@ -88,8 +75,10 @@ for (i in 1:n.generations){
   sum <- SummaryStats(polygons = plot1, distances = capacity)
   if(sum[1]=="OnePopOnly") {next}
   output <- t(data.frame(c(i, sum)))
-  OUT <- rbind(OUT, output) 
+  OUT <- rbind(OUT, output)
 }
+
+
 
 
 

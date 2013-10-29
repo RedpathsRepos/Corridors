@@ -5,21 +5,52 @@
 # Usage notes:  set variables, fine tune as needed
 #============================================================================================================================#
 setwd("C:/Dropbox/InPrep/corridors/working")        # Source functions and load packages 
-dat <- read.table(paste(getwd(), "/sim_stats.txt", sep = ''), header=FALSE, sep="\t", na.strings="?", dec=".", strip.white=TRUE)
-colnames(dat) <- c("area", "node.area", "width", "c.capacity", "mu", "size", "shape", "scale", "n.alleles", "n.loci", "mutation.rate", "rep.no","generation", "Ho","Hs","Ht","Dst","Htp","Dstp","Fst","Fstp","Fis", "Dest", "N")
-dat = dat[dat[, 4]==3000, ]
+dat.all <- read.table(paste(getwd(), "/sim_stats.txt", sep = ''), header=FALSE, sep="\t", na.strings="?", dec=".", strip.white=TRUE)
+colnames(dat.all) <- c("area", "node.area", "width", "c.capacity", "mu", "size", "shape", "scale", "n.alleles", "n.loci", "mutation.rate", "rep.no","generation", "Ho","Hs","Ht","Dst","Htp","Dstp","Fst","Fstp","Fis", "Dest", "N")
+
+#pdf("Figure 5.pdf", onefile=FALSE, width = 3.5, height=10, paper="letter", title="Figure 5", pointsize=10)
+#par(mfrow=c(1,5), omi=c(4,0,2,.1), mai=c(1,1,0.5,0.1) ,cex=1.5, las=1)   # here I played with omi and pdf height to raise figure  above center
+
+par(mfrow=c(2,3))
 
 
-dat2 <- dat[dat$width == 0.8, ]
-plot(dat2[, 13], dat2[, 20], xlab = "Generations", ylab= "Fst")
+for(i in unique(dat.all[, 4])){
+  
+dat = dat.all[dat.all[, 4]==i, ]
 
-dat3 <- dat[dat$width == 2, ]
-points(dat3[, 13], dat3[, 20], col = "blue")
+OUT <- NULL
+for (w in unique(dat[, 3])){
+  dat1 <- dat[dat[, 3]==w, ]
+  for (n in unique(dat1[, 13])){
+    dat2 <- dat1[dat1[, 13]==n, ]
+    output <- mean(dat2[, 20])   # 20 mean Fst, 14 = ho
+    output <- cbind(n,dat2[1, 3], dat2[1, 4], output)
+    OUT <- rbind(OUT, output)
+  }
+}
 
-dat3 <- dat[dat$width == 5, ]
-points(dat3[, 13], dat3[, 20], col = "green")
+
+dat2 <- OUT
+dat3 <- dat2[dat2[, 2] == 0.8, ]
+plot(dat3[, 1], dat3[, 4], xlab = "Generations", ylab= "Fst", ylim = c(min(OUT[, 4]), 0.05), main = paste("N = ",i))
+
+dat3 <- dat2[dat2[, 2] == 2, ]
+points(dat3[, 1], dat3[, 4], xlab = "Generations", ylab= "Fst", col = "red")
+
+dat3 <- dat2[dat2[, 2] == 3, ]
+points(dat3[, 1], dat3[, 4], xlab = "Generations", ylab= "Fst", col = "orange")
+
+dat3 <- dat2[dat2[, 2] == 4, ]
+points(dat3[, 1], dat3[, 4], xlab = "Generations", ylab= "Fst", col = "blue")
+
+dat3 <- dat2[dat2[, 2] == 5, ]
+points(dat3[, 1], dat3[, 4], xlab = "Generations", ylab= "Fst", col = "green")
 
 
-key=c("Width = 0.8", "Width = 2", "Width = 5")
-legend(1,0.06327, key, pch=c(1,1,1), col = c("black", "blue", "green"), bty= "n")
+key=c("Width = 0.8", "Width = 2", "Width = 3", "Width = 4", "Width = 5")
+legend(1,0.05, key, pch=c(1,1,1), col = c("black", "red", "orange", "blue", "green"), bty= "n")
+
+}
+
+
 

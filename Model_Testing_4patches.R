@@ -4,31 +4,31 @@
 # This script:  Is the basic model for the corridors project
 # Usage notes:  set variables, fine tune as needed
 #============================================================================================================================#
-setwd("C:/Dropbox/InPrep/corridors/rscript.corridors")        # Source functions and load packages 
-source(paste(getwd(), "/source/FunctionSourcer.R", sep = ''))
-FunctionSourcer()                 # loads packages, sources functions, and sets the working directory
+setwd("C:/Dropbox/InPrep/corridors/")  # Set main directory, use getwd() for use on cluster 
+base.directory <- getwd()
+source(paste(base.directory, "/rscript.corridors/source/FunctionSourcer.R", sep = '')) # loads packages, sources functions, and sets directory
 
 area           <- 01000               # the total area of the matrix (theoretocally is unitless)
 node.area      <- 00100               # the area for each patch
 width.set      <- c(0.8, 2, 5)        # the width of the corridor
-c.capa
-city.set <- c(3000, 2000, 1000)       # the total carrying capacity (currently regulated across entire metapopulation)
+c.capacity.set <- c(3000, 2000, 1000)       # the total carrying capacity (currently regulated across entire metapopulation)
 
-mu         <- 005                 # Reproductive Success
-size       <- 0.3
-rs.shape   <- ReproductiveSuccess(max(c.capacity), mu, size)  # Note this is just for max c.capcity if multiple values used
+mu         <- 001                 # Reproductive Success11000
+size       <- 0.1
+rs.shape   <- ReproductiveSuccess(max(c.capacity.set), mu, size)  # Note this is just for max c.capcity if multiple values used
+# rs.shape   <- rep(9, max(c.capacity))  - for no variance in RS
 sum(rs.shape); mean(rs.shape)
 
 shape     <- 002                  # Dispersal Kernnel
 scale     <- 001
-kernnel   <- DispersalKernnel(shape, scale)                   # if dispersal distances are too large, will drop below carrying capacity
+#kernnel   <- DispersalKernnel(shape, scale)                   # if dispersal distances are too large, will drop below carrying capacity
 
 n.alleles     <- 2                # Marker and Genotype Characteristics
 n.loci        <- 100
-mutation.rate <- 0.00001
+mutation.rate <- 0.00000001
 
-n.reps        <- 0005             # model run parameters, numer pf replicate runs
-n.generations <- 0075             # number of generations to run model for
+n.reps        <- 0002             # model run parameters, numer pf replicate runs
+n.generations <- 0002             # number of generations to run model for
 #============================================================================================================================#
 
 

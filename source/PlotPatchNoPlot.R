@@ -1,5 +1,5 @@
-PlotPatch <- function(distances, area, node.area, width, file.name) {
-  ## plots the 2d distribution of individuals, the nodes, and the corridors
+PlotPatchNoPlot <- function(distances, area, node.area, width) {
+  ## plots the 2d distribution of individuals, the nodes, and the corridors, no plot specified for running on cluster
   # distances is the output from PropaguleDistances2D
   # area is the area for the entire metapopulation
   # node.area is the area for each of the nodes (i.e., reserves)
@@ -17,7 +17,7 @@ PlotPatch <- function(distances, area, node.area, width, file.name) {
   if(length(pop2) < 4) { pop2 <- matrix(-4, 4, 4)}
   if(length(pop3) < 4) { pop3 <- matrix(-4, 4, 4)}
   if(length(pop4) < 4) { pop4 <- matrix(-4, 4, 4)}
-
+  
   # reformat if only a single individual
   if(length(pop1) == 4) { pop1 <- as.matrix(t(pop1))}
   if(length(pop2) == 4) { pop2 <- as.matrix(t(pop2))}
@@ -25,11 +25,11 @@ PlotPatch <- function(distances, area, node.area, width, file.name) {
   if(length(pop4) == 4) { pop4 <- as.matrix(t(pop4))}
   
   # plot organisms
-  pdf(paste(file.name,"corridors.pdf"))
-  plot(pop1[, 3], pop1[, 4], xlab = "Distance (km)", ylab = "Distance (km)", xlim = c(min(distances[, 3])-1, max(distances[, 3]+1)), ylim = c(min(distances[, 4]-1), max(distances[, 4]+1)))
-  points(pop2[, 3],pop2[, 4], col = "blue")
-  points(pop3[, 3],pop3[, 4],, col = "green")
-  points(pop4[, 3],pop4[, 4], col = "red")
+  #pdf(paste(file.name,"corridors.pdf"))
+  #plot(pop1[, 3], pop1[, 4], xlab = "Distance (km)", ylab = "Distance (km)", xlim = c(min(distances[, 3])-1, max(distances[, 3]+1)), ylim = c(min(distances[, 4]-1), max(distances[, 4]+1)))
+  #points(pop2[, 3],pop2[, 4], col = "blue")
+  #points(pop3[, 3],pop3[, 4],, col = "green")
+  #points(pop4[, 3],pop4[, 4], col = "red")
   
   # plot node boundaries (reserves)
   x <- sqrt(area)
@@ -46,10 +46,10 @@ PlotPatch <- function(distances, area, node.area, width, file.name) {
   point2 <- cbind(x2, y1)
   point3 <- cbind(x2, y2)
   point4 <- cbind(x1, y2)
-  segments(point1[, 1], point1[, 2], point2[, 1], point2[, 2], col="purple", lwd = 3)
-  segments(point3[, 1], point3[, 2], point2[, 1], point2[, 2], col="purple", lwd = 3)
-  segments(point3[, 1], point3[, 2], point4[, 1], point4[, 2], col="purple", lwd = 3)
-  segments(point1[, 1], point1[, 2], point4[, 1], point4[, 2], col="purple", lwd = 3)
+  #segments(point1[, 1], point1[, 2], point2[, 1], point2[, 2], col="purple", lwd = 3)
+  #segments(point3[, 1], point3[, 2], point2[, 1], point2[, 2], col="purple", lwd = 3)
+  #segments(point3[, 1], point3[, 2], point4[, 1], point4[, 2], col="purple", lwd = 3)
+  #segments(point1[, 1], point1[, 2], point4[, 1], point4[, 2], col="purple", lwd = 3)
   
   square1 <- c(point1[1, 1], point1[1, 2], point2[1, 1], point2[1, 2], point2[1, 1], point3[1, 2], point4[1, 1], point4[1, 2])
   square2 <- c(point1[2, 1], point1[2, 2], point2[2, 1], point2[2, 2], point2[2, 1], point3[2, 2], point4[2, 1], point4[2, 2])
@@ -63,15 +63,15 @@ PlotPatch <- function(distances, area, node.area, width, file.name) {
   xright1 <- point2[4, 2]
   ytop1 <- ys[1]+width
   ybottom1 <- ys[1]-width
-  rect(xleft1, ybottom1, xright1, ytop1, border="purple", lwd=2)
+  #rect(xleft1, ybottom1, xright1, ytop1, border="purple", lwd=2)
   square5 <- c(xleft1, ybottom1, xright1, ybottom1, xright1, ytop1, xleft1, ytop1)
-    
+  
   # top corridor
   xleft1 <- point2[1, 1]
   xright1 <- point2[4, 2]
   ytop1 <- ys[3]+width
   ybottom1 <- ys[3]-width
-  rect(xleft1, ybottom1, xright1, ytop1, border="purple", lwd=2)
+  #rect(xleft1, ybottom1, xright1, ytop1, border="purple", lwd=2)
   square6 <- c(xleft1, ybottom1, xright1, ybottom1, xright1, ytop1, xleft1, ytop1)
   
   # left corridor
@@ -79,7 +79,7 @@ PlotPatch <- function(distances, area, node.area, width, file.name) {
   xright1 <- xs[2]+width
   ytop1 <- point2[3, 2]
   ybottom1 <- point3[1, 2]
-  rect(xleft1, ybottom1, xright1, ytop1, border="purple", lwd=2)
+  #rect(xleft1, ybottom1, xright1, ytop1, border="purple", lwd=2)
   square7 <- c(xleft1, ybottom1, xright1, ybottom1, xright1, ytop1, xleft1, ytop1)
   
   # right corridor
@@ -87,12 +87,11 @@ PlotPatch <- function(distances, area, node.area, width, file.name) {
   xright1 <- xs[1]+width
   ytop1 <- point2[3, 2]
   ybottom1 <- point3[1, 2]
-  rect(xleft1, ybottom1, xright1, ytop1, border="purple", lwd=2)
+  #rect(xleft1, ybottom1, xright1, ytop1, border="purple", lwd=2)
   square8 <- c(xleft1, ybottom1, xright1, ybottom1, xright1, ytop1, xleft1, ytop1)
-  dev.off()
+  #dev.off()
   
   coords <- rbind(square1, square2, square3, square4, square5, square6, square7, square8)
   return(coords)
 }
-
 
