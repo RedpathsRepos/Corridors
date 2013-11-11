@@ -16,13 +16,19 @@ SummaryStats <- function(polygons, distances) {
     all[all == "FALSE"] <- 0
     test5 <- rowSums(all)
     retain <- which(test5 == 0)
-    if (length(retain) < 15) {next}             # if less than 15 individuals in a patch, move to next patch
+    if (length(retain) < 10) {next}             # if less than 10 individuals in a patch, move to next patch
     points.in <- distances[retain, ]
     points.in <- cbind(p, points.in)
     OUT <- rbind(OUT, points.in)
   }
   # first coloumn of OUT is the patch they are now residing in. 1=bottomleft, 2=bottomright, 3=topright, 4=topleft
   gdata <- as.data.frame(OUT[, -(2:5)])
+  n.each.patch <- data.frame(table(gdata[, 1]))                               # number of individuals in each patch
+  n.each.patch <- t(cbind(c(paste(n.each.patch[, 1], n.each.patch[, 2]))))
+  if (length(n.each.patch) < 4) {n.each.patch = c(n.each.patch, rep(0, 4-length(n.each.patch)))}  
+  n.unique.genotypes <- gdata[, -1]                                            # number of unique genotypes
+  n.unique.genotypes <- pasteCols(n.unique.genotypes)                          # requires library plotrix 
+  n.unique.genotypes <- length(unique(n.unique.genotypes))
   if (length(unique(gdata[, 1]))==1) {return("OnePopOnly")} else {
     nams = 1:length(gdata[, 1])
     rownames(gdata) <- make.names(nams, unique = TRUE)   # not sure why this formatting was needed, kind of annoying really
@@ -34,7 +40,7 @@ SummaryStats <- function(polygons, distances) {
     stats <- c(stats, N)
     #asp = indpca(gdata)
     #plot.indpca(asp)
-    OUT <- stats
+    OUT <- c(stats, n.each.patch, n.unique.genotypes)
     return(OUT)
   }
 }  

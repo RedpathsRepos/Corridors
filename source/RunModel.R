@@ -17,7 +17,7 @@ RunModel <- function(n.reps, n.generations) {
       attrition <- InsideOutTest(polygons = plot1, distances = distances.new)
       capacity <- CarryingCapacity(distances = attrition, g.types = capacity, c.capacity) 
       capacity <- MutationModule(distances = capacity, mutation.rate)
-      if(i == n.generations && r == n.reps) {plot3 <- PlotPatch(distances = capacity, area, node.area, width, file.name = paste(width,c.capacity))} # plot
+      if(i == n.generations && r == n.reps) {plot3 <- PlotPatch(distances = capacity, area, node.area, width, file.name = paste(width,area))} # plot
       if(length(capacity[, 1]) < 50) {break}
       sum <- SummaryStats(polygons = plot1, distances = capacity)
       if(sum[1]=="OnePopOnly") {next}

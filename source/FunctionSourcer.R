@@ -3,6 +3,7 @@
   setwd(paste(base.directory,"/rscript.corridors/", sep = ''))    # set temp working directory 
   library(hierfstat)
   library(mnormt)   # used for multivariate normal distribution in initalizing model  
+  library(plotrix)
   source(paste(getwd(), "/source/ReproductiveSuccess.R", sep = ''))
   source(paste(getwd(), "/source/DispersalKernnel.R", sep = ''))
   source(paste(getwd(), "/source/PropaguleDistances2D.R", sep = ''))
